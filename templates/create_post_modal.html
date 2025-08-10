@@ -1,0 +1,769 @@
+<!-- Create Post Modal -->
+<div id="createPostModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-header">
+            <h2>Create New Post</h2>
+            <button class="modal-close" onclick="closeCreatePostModal()">&times;</button>
+        </div>
+        
+        <form id="createPostForm" class="modal-body">
+            <!-- Content Selection -->
+            <div class="form-group">
+                <label for="contentSource">Content Source</label>
+                <select id="contentSource" name="content_source" class="form-control" onchange="handleContentSourceChange()">
+                    <option value="new">Create New Content</option>
+                    <option value="existing">Use Existing Content</option>
+                    <option value="ai">Generate with AI</option>
+                </select>
+            </div>
+
+            <!-- Existing Content Selection -->
+            <div id="existingContentSection" class="form-group" style="display: none;">
+                <label for="existingContent">Select Content</label>
+                <select id="existingContent" name="existing_content" class="form-control">
+                    <option value="">Loading content...</option>
+                </select>
+            </div>
+
+            <!-- AI Generation Section -->
+            <div id="aiGenerationSection" style="display: none;">
+                <div class="form-group">
+                    <label for="aiPrompt">AI Prompt</label>
+                    <textarea id="aiPrompt" name="ai_prompt" class="form-control" rows="3" placeholder="Describe what you want to post about..."></textarea>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label for="aiTone">Tone</label>
+                        <select id="aiTone" name="ai_tone" class="form-control">
+                            <option value="professional">Professional</option>
+                            <option value="casual">Casual</option>
+                            <option value="friendly">Friendly</option>
+                            <option value="formal">Formal</option>
+                            <option value="creative">Creative</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="aiLength">Length</label>
+                        <select id="aiLength" name="ai_length" class="form-control">
+                            <option value="short">Short (50-100 words)</option>
+                            <option value="medium">Medium (100-250 words)</option>
+                            <option value="long">Long (250-500 words)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="button" class="btn btn-secondary" onclick="generateAIContent()">
+                            <i class="fas fa-magic"></i>
+                            Generate
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post Content -->
+            <div class="form-group">
+                <label for="postTitle">Post Title</label>
+                <input type="text" id="postTitle" name="title" class="form-control" placeholder="Enter post title...">
+            </div>
+
+            <div class="form-group">
+                <label for="postContent">Post Content</label>
+                <textarea id="postContent" name="content" class="form-control" rows="6" placeholder="Enter your post content..."></textarea>
+                <div class="form-help">
+                    <span id="characterCount">0</span> characters
+                    <button type="button" class="btn btn-link btn-sm" onclick="improveContent()">
+                        <i class="fas fa-magic"></i>
+                        Improve with AI
+                    </button>
+                </div>
+            </div>
+
+            <!-- Platform Selection -->
+            <div class="form-group">
+                <label>Target Platforms</label>
+                <div class="platform-selection">
+                    <div class="platform-option">
+                        <input type="checkbox" id="platform_facebook" name="platforms" value="facebook">
+                        <label for="platform_facebook">
+                            <i class="fab fa-facebook"></i>
+                            Facebook
+                        </label>
+                    </div>
+                    <div class="platform-option">
+                        <input type="checkbox" id="platform_instagram" name="platforms" value="instagram">
+                        <label for="platform_instagram">
+                            <i class="fab fa-instagram"></i>
+                            Instagram
+                        </label>
+                    </div>
+                    <div class="platform-option">
+                        <input type="checkbox" id="platform_twitter" name="platforms" value="twitter">
+                        <label for="platform_twitter">
+                            <i class="fab fa-twitter"></i>
+                            Twitter
+                        </label>
+                    </div>
+                    <div class="platform-option">
+                        <input type="checkbox" id="platform_linkedin" name="platforms" value="linkedin">
+                        <label for="platform_linkedin">
+                            <i class="fab fa-linkedin"></i>
+                            LinkedIn
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Selection -->
+            <div class="form-group">
+                <label for="selectedAccount">Account</label>
+                <select id="selectedAccount" name="account_id" class="form-control">
+                    <option value="">Select account...</option>
+                </select>
+            </div>
+
+            <!-- Guest Posting Option -->
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="enableGuestPosting" name="enable_guest_posting" onchange="toggleGuestPosting()">
+                    <label for="enableGuestPosting">Enable Guest Posting</label>
+                </div>
+            </div>
+
+            <div id="guestPostingSection" class="form-group" style="display: none;">
+                <label for="guestSite">Guest Posting Site</label>
+                <select id="guestSite" name="guest_site_id" class="form-control">
+                    <option value="">Select site...</option>
+                </select>
+            </div>
+
+            <!-- Media Upload -->
+            <div class="form-group">
+                <label for="mediaUpload">Media (Optional)</label>
+                <div class="file-upload-area" onclick="document.getElementById('mediaUpload').click()">
+                    <input type="file" id="mediaUpload" name="media" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(this)">
+                    <div class="upload-placeholder">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload images or videos</p>
+                        <small>Supports JPG, PNG, MP4 (max 50MB)</small>
+                    </div>
+                    <div id="mediaPreview" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Scheduling -->
+            <div class="form-group">
+                <label>Scheduling</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="postNow" name="schedule_type" value="now" checked onchange="toggleScheduling()">
+                        <label for="postNow">Post Now</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="schedulePost" name="schedule_type" value="scheduled" onchange="toggleScheduling()">
+                        <label for="schedulePost">Schedule for Later</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="schedulingSection" class="form-group" style="display: none;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <label for="scheduleDate">Date</label>
+                        <input type="date" id="scheduleDate" name="schedule_date" class="form-control">
+                    </div>
+                    <div>
+                        <label for="scheduleTime">Time</label>
+                        <input type="time" id="scheduleTime" name="schedule_time" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Options -->
+            <div class="form-group">
+                <button type="button" class="btn btn-link" onclick="toggleAdvancedOptions()">
+                    <i class="fas fa-cog"></i>
+                    Advanced Options
+                </button>
+            </div>
+
+            <div id="advancedOptions" style="display: none;">
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="autoHashtags" name="auto_hashtags" checked>
+                        <label for="autoHashtags">Auto-generate hashtags</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="optimizeContent" name="optimize_content" checked>
+                        <label for="optimizeContent">Platform-specific optimization</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="customHashtags">Custom Hashtags</label>
+                    <input type="text" id="customHashtags" name="custom_hashtags" class="form-control" placeholder="#hashtag1 #hashtag2 #hashtag3">
+                </div>
+            </div>
+        </form>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+                <i class="fas fa-save"></i>
+                Save Draft
+            </button>
+            <button type="button" class="btn btn-primary" onclick="createPost()">
+                <i class="fas fa-paper-plane"></i>
+                Create Post
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--gray-900);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--gray-500);
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: var(--gray-700);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px;
+    border-top: 1px solid var(--gray-200);
+}
+
+.platform-selection {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.platform-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.platform-option:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color-light);
+}
+
+.platform-option input[type="checkbox"] {
+    margin: 0;
+}
+
+.platform-option input[type="checkbox"]:checked + label {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.platform-option label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.radio-option input[type="radio"] {
+    margin: 0;
+}
+
+.radio-option label {
+    margin: 0;
+    cursor: pointer;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin: 0;
+}
+
+.checkbox-group label {
+    margin: 0;
+    cursor: pointer;
+}
+
+.file-upload-area {
+    border: 2px dashed var(--gray-300);
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-upload-area:hover {
+    border-color: var(--primary-color);
+    background: var(--gray-50);
+}
+
+.upload-placeholder i {
+    font-size: 48px;
+    color: var(--gray-400);
+    margin-bottom: 16px;
+}
+
+.upload-placeholder p {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: var(--gray-600);
+}
+
+.upload-placeholder small {
+    color: var(--gray-500);
+}
+
+.form-help {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--gray-500);
+}
+
+#characterCount {
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .modal {
+        padding: 10px;
+    }
+    
+    .modal-content {
+        max-height: 95vh;
+    }
+    
+    .platform-selection {
+        grid-template-columns: 1fr;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+// Modal functions
+function showCreatePostModal() {
+    document.getElementById('createPostModal').style.display = 'flex';
+    loadExistingContent();
+    loadAccounts();
+    loadGuestSites();
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('scheduleDate').min = today;
+    
+    // Set default time to current time + 1 hour
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+    document.getElementById('scheduleTime').value = now.toTimeString().slice(0, 5);
+}
+
+function closeCreatePostModal() {
+    document.getElementById('createPostModal').style.display = 'none';
+    document.getElementById('createPostForm').reset();
+    document.getElementById('mediaPreview').style.display = 'none';
+    document.getElementById('mediaPreview').innerHTML = '';
+}
+
+function handleContentSourceChange() {
+    const source = document.getElementById('contentSource').value;
+    const existingSection = document.getElementById('existingContentSection');
+    const aiSection = document.getElementById('aiGenerationSection');
+    
+    existingSection.style.display = source === 'existing' ? 'block' : 'none';
+    aiSection.style.display = source === 'ai' ? 'block' : 'none';
+    
+    if (source === 'existing') {
+        loadExistingContent();
+    }
+}
+
+function toggleGuestPosting() {
+    const enabled = document.getElementById('enableGuestPosting').checked;
+    const section = document.getElementById('guestPostingSection');
+    section.style.display = enabled ? 'block' : 'none';
+    
+    if (enabled) {
+        loadGuestSites();
+    }
+}
+
+function toggleScheduling() {
+    const isScheduled = document.getElementById('schedulePost').checked;
+    const section = document.getElementById('schedulingSection');
+    section.style.display = isScheduled ? 'block' : 'none';
+}
+
+function toggleAdvancedOptions() {
+    const section = document.getElementById('advancedOptions');
+    const isVisible = section.style.display !== 'none';
+    section.style.display = isVisible ? 'none' : 'block';
+}
+
+async function loadExistingContent() {
+    try {
+        const response = await fetch('/api/content');
+        const data = await response.json();
+        
+        const select = document.getElementById('existingContent');
+        select.innerHTML = '<option value="">Select content...</option>';
+        
+        if (data.success && data.content) {
+            data.content.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.title;
+                select.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading content:', error);
+        showNotification('Error loading content', 'error');
+    }
+}
+
+async function loadAccounts() {
+    try {
+        const response = await fetch('/api/accounts');
+        const data = await response.json();
+        
+        const select = document.getElementById('selectedAccount');
+        select.innerHTML = '<option value="">Select account...</option>';
+        
+        if (data.success && data.accounts) {
+            data.accounts.forEach(account => {
+                const option = document.createElement('option');
+                option.value = account.id;
+                option.textContent = `${account.platform} - ${account.account_name}`;
+                select.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading accounts:', error);
+        showNotification('Error loading accounts', 'error');
+    }
+}
+
+async function loadGuestSites() {
+    try {
+        const response = await fetch('/api/guest-posting/sites');
+        const data = await response.json();
+        
+        const select = document.getElementById('guestSite');
+        select.innerHTML = '<option value="">Select site...</option>';
+        
+        if (data.success && data.sites) {
+            data.sites.forEach(site => {
+                const option = document.createElement('option');
+                option.value = site.id;
+                option.textContent = site.name;
+                select.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading guest sites:', error);
+        showNotification('Error loading guest sites', 'error');
+    }
+}
+
+async function generateAIContent() {
+    const prompt = document.getElementById('aiPrompt').value;
+    const tone = document.getElementById('aiTone').value;
+    const length = document.getElementById('aiLength').value;
+    
+    if (!prompt.trim()) {
+        showNotification('Please enter a prompt for AI generation', 'warning');
+        return;
+    }
+    
+    try {
+        showNotification('Generating content with AI...', 'info');
+        
+        const response = await fetch('/api/content/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                tone: tone,
+                length: length
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            document.getElementById('postContent').value = data.content;
+            updateCharacterCount();
+            showNotification('Content generated successfully!', 'success');
+        } else {
+            showNotification(data.message || 'Error generating content', 'error');
+        }
+    } catch (error) {
+        console.error('Error generating content:', error);
+        showNotification('Error generating content', 'error');
+    }
+}
+
+async function improveContent() {
+    const content = document.getElementById('postContent').value;
+    
+    if (!content.trim()) {
+        showNotification('Please enter content to improve', 'warning');
+        return;
+    }
+    
+    try {
+        showNotification('Improving content with AI...', 'info');
+        
+        const response = await fetch('/api/content/improve', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                content: content,
+                improvements: ['grammar', 'engagement', 'readability']
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            document.getElementById('postContent').value = data.improved_content;
+            updateCharacterCount();
+            showNotification('Content improved successfully!', 'success');
+        } else {
+            showNotification(data.message || 'Error improving content', 'error');
+        }
+    } catch (error) {
+        console.error('Error improving content:', error);
+        showNotification('Error improving content', 'error');
+    }
+}
+
+function handleMediaUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const preview = document.getElementById('mediaPreview');
+    const placeholder = document.querySelector('.upload-placeholder');
+    
+    if (file.type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = '200px';
+        img.style.borderRadius = '8px';
+        
+        preview.innerHTML = '';
+        preview.appendChild(img);
+        preview.style.display = 'block';
+        placeholder.style.display = 'none';
+    } else if (file.type.startsWith('video/')) {
+        const video = document.createElement('video');
+        video.src = URL.createObjectURL(file);
+        video.controls = true;
+        video.style.maxWidth = '100%';
+        video.style.maxHeight = '200px';
+        video.style.borderRadius = '8px';
+        
+        preview.innerHTML = '';
+        preview.appendChild(video);
+        preview.style.display = 'block';
+        placeholder.style.display = 'none';
+    }
+}
+
+function updateCharacterCount() {
+    const content = document.getElementById('postContent').value;
+    document.getElementById('characterCount').textContent = content.length;
+}
+
+// Add character count listener
+document.getElementById('postContent').addEventListener('input', updateCharacterCount);
+
+async function saveDraft() {
+    const formData = new FormData(document.getElementById('createPostForm'));
+    formData.append('status', 'draft');
+    
+    try {
+        const response = await fetch('/api/posts', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification('Draft saved successfully!', 'success');
+            closeCreatePostModal();
+        } else {
+            showNotification(data.message || 'Error saving draft', 'error');
+        }
+    } catch (error) {
+        console.error('Error saving draft:', error);
+        showNotification('Error saving draft', 'error');
+    }
+}
+
+async function createPost() {
+    const formData = new FormData(document.getElementById('createPostForm'));
+    
+    // Validate required fields
+    const title = formData.get('title');
+    const content = formData.get('content');
+    const platforms = formData.getAll('platforms');
+    
+    if (!title || !content) {
+        showNotification('Please fill in title and content', 'warning');
+        return;
+    }
+    
+    if (platforms.length === 0) {
+        showNotification('Please select at least one platform', 'warning');
+        return;
+    }
+    
+    try {
+        showNotification('Creating post...', 'info');
+        
+        const response = await fetch('/api/posts', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification('Post created successfully!', 'success');
+            closeCreatePostModal();
+            // Refresh dashboard or redirect to posts page
+            if (typeof loadRecentPosts === 'function') {
+                loadRecentPosts();
+            }
+        } else {
+            showNotification(data.message || 'Error creating post', 'error');
+        }
+    } catch (error) {
+        console.error('Error creating post:', error);
+        showNotification('Error creating post', 'error');
+    }
+}
+
+// Close modal when clicking outside
+document.getElementById('createPostModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeCreatePostModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('createPostModal').style.display === 'flex') {
+        closeCreatePostModal();
+    }
+});
+</script>
+

@@ -1,0 +1,30 @@
+# Social Media Automation V2 - Requirements
+# Windows Compatible Dependencies
+
+# Web Framework
+Flask==2.3.3
+Flask-CORS==4.0.0
+
+# Web Automation
+selenium==4.15.2
+beautifulsoup4==4.12.2
+requests==2.31.0
+
+# Image Processing
+Pillow==11.0.0
+
+# OpenAI Integration
+openai==0.28.1
+
+# Utilities
+python-dotenv==1.0.0
+schedule==1.2.0
+
+# Development Tools (Optional)
+pytest==7.4.3
+pytest-flask==1.3.0
+
+# Note: ChromeDriver needs to be installed separately
+# Download from: https://chromedriver.chromium.org/
+# Or use: pip install webdriver-manager (alternative)
+

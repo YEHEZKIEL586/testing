@@ -1,0 +1,664 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Social Media Automation V2{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <div class="stat-icon primary">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                +12%
+            </div>
+        </div>
+        <div class="stat-value" id="totalAccounts">{{ stats.total_accounts or 0 }}</div>
+        <div class="stat-label">Social Accounts</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <div class="stat-icon success">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                +8%
+            </div>
+        </div>
+        <div class="stat-value" id="publishedPosts">{{ stats.published_posts or 0 }}</div>
+        <div class="stat-label">Published Posts</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <div class="stat-icon warning">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-change">
+                <i class="fas fa-minus"></i>
+                0%
+            </div>
+        </div>
+        <div class="stat-value" id="pendingPosts">{{ stats.pending_posts or 0 }}</div>
+        <div class="stat-label">Pending Posts</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <div class="stat-icon info">
+                <i class="fas fa-percentage"></i>
+            </div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                +5%
+            </div>
+        </div>
+        <div class="stat-value" id="successRate">{{ stats.success_rate or 0 }}%</div>
+        <div class="stat-label">Success Rate</div>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 32px;">
+    <!-- Left Column -->
+    <div>
+        <!-- Quick Actions -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title">Quick Actions</h3>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <button class="btn btn-primary" onclick="window.location.href='/posts'">
+                        <i class="fas fa-plus"></i>
+                        Create New Post
+                    </button>
+                    <button class="btn btn-success" data-action="generate" data-generate-type="bulk">
+                        <i class="fas fa-magic"></i>
+                        Generate Content
+                    </button>
+                    <button class="btn btn-info" onclick="window.location.href='/accounts'">
+                        <i class="fas fa-user-plus"></i>
+                        Add Account
+                    </button>
+                    <button class="btn btn-warning" data-action="scrape">
+                        <i class="fas fa-download"></i>
+                        Scrape Content
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Posts -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Recent Posts</h3>
+                <a href="/posts" class="btn btn-outline btn-sm">View All</a>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Platform</th>
+                                <th>Content</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentPostsTable">
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fab fa-facebook text-primary"></i>
+                                        Facebook
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        Exciting news about our latest product launch...
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-success">Published</span>
+                                </td>
+                                <td>2 hours ago</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" data-action="edit" data-id="1">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fab fa-instagram text-danger"></i>
+                                        Instagram
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        Behind the scenes of our creative process...
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-warning">Pending</span>
+                                </td>
+                                <td>5 hours ago</td>
+                                <td>
+                                    <button class="btn btn-success btn-sm" data-action="publish" data-id="2">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fab fa-linkedin text-info"></i>
+                                        LinkedIn
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        Industry insights and professional tips...
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-info">Draft</span>
+                                </td>
+                                <td>1 day ago</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" data-action="edit" data-id="3">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column -->
+    <div>
+        <!-- Platform Performance -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title">Platform Performance</h3>
+            </div>
+            <div class="card-body">
+                <div class="platform-stats">
+                    <div class="platform-stat">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fab fa-facebook text-primary"></i>
+                                <span>Facebook</span>
+                            </div>
+                            <span class="text-success">85%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%; background: var(--primary-color);"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="platform-stat">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fab fa-instagram text-danger"></i>
+                                <span>Instagram</span>
+                            </div>
+                            <span class="text-success">92%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 92%; background: #e4405f;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="platform-stat">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fab fa-twitter text-info"></i>
+                                <span>Twitter</span>
+                            </div>
+                            <span class="text-warning">78%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%; background: #1da1f2;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="platform-stat">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fab fa-linkedin text-primary"></i>
+                                <span>LinkedIn</span>
+                            </div>
+                            <span class="text-success">88%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 88%; background: #0077b5;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Recent Activity</h3>
+            </div>
+            <div class="card-body">
+                <div class="activity-feed">
+                    <div class="activity-item">
+                        <div class="activity-icon success">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>Post published to Instagram successfully</p>
+                            <span class="activity-time">2 minutes ago</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon info">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>New Facebook account added</p>
+                            <span class="activity-time">1 hour ago</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>Twitter account needs re-authentication</p>
+                            <span class="activity-time">3 hours ago</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon success">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>Content scraped from WordPress site</p>
+                            <span class="activity-time">5 hours ago</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon info">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>Automation schedule updated</p>
+                            <span class="activity-time">1 day ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-success {
+    background: var(--success-color);
+    color: white;
+}
+
+.badge-warning {
+    background: var(--warning-color);
+    color: white;
+}
+
+.badge-info {
+    background: var(--info-color);
+    color: white;
+}
+
+.badge-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
+.platform-stat {
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.activity-feed {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.activity-icon.success {
+    background: var(--success-color);
+}
+
+.activity-icon.info {
+    background: var(--info-color);
+}
+
+.activity-icon.warning {
+    background: var(--warning-color);
+}
+
+.activity-icon.danger {
+    background: var(--danger-color);
+}
+
+.activity-content p {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    color: var(--gray-900);
+}
+
+.activity-time {
+    font-size: 12px;
+    color: var(--gray-500);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Dashboard specific JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    // Load real-time stats
+    loadDashboardStats();
+    
+    // Refresh stats every 30 seconds
+    setInterval(loadDashboardStats, 30000);
+    
+    // Load recent posts
+    loadRecentPosts();
+});
+
+async function loadDashboardStats() {
+    try {
+        const response = await fetch('/api/dashboard/stats');
+        const stats = await response.json();
+        
+        if (stats) {
+            updateStatCards(stats);
+        }
+    } catch (error) {
+        console.error('Error loading dashboard stats:', error);
+    }
+}
+
+function updateStatCards(stats) {
+    const elements = {
+        'totalAccounts': stats.total_accounts || 0,
+        'publishedPosts': stats.published_posts || 0,
+        'pendingPosts': stats.pending_posts || 0,
+        'successRate': (stats.success_rate || 0) + '%'
+    };
+    
+    Object.entries(elements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            // Animate number change
+            animateNumber(element, value);
+        }
+    });
+}
+
+function animateNumber(element, newValue) {
+    const currentValue = parseInt(element.textContent) || 0;
+    const targetValue = parseInt(newValue) || 0;
+    
+    if (currentValue === targetValue) return;
+    
+    const duration = 1000;
+    const steps = 20;
+    const stepValue = (targetValue - currentValue) / steps;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const timer = setInterval(() => {
+        currentStep++;
+        const value = Math.round(currentValue + (stepValue * currentStep));
+        element.textContent = value + (newValue.includes('%') ? '%' : '');
+        
+        if (currentStep >= steps) {
+            clearInterval(timer);
+            element.textContent = newValue;
+        }
+    }, stepDuration);
+}
+
+async function loadRecentPosts() {
+    try {
+        const response = await fetch('/api/posts?limit=5');
+        const data = await response.json();
+        
+        if (data.posts) {
+            updateRecentPostsTable(data.posts);
+        }
+    } catch (error) {
+        console.error('Error loading recent posts:', error);
+    }
+}
+
+function updateRecentPostsTable(posts) {
+    const tbody = document.getElementById('recentPostsTable');
+    if (!tbody || posts.length === 0) return;
+    
+    tbody.innerHTML = posts.map(post => `
+        <tr>
+            <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fab fa-${getPlatformIcon(post.platform)} ${getPlatformColor(post.platform)}"></i>
+                    ${post.platform}
+                </div>
+            </td>
+            <td>
+                <div style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    ${post.content.substring(0, 50)}...
+                </div>
+            </td>
+            <td>
+                <span class="badge badge-${getStatusColor(post.status)}">${post.status}</span>
+            </td>
+            <td>${formatTimeAgo(post.created_at)}</td>
+            <td>
+                ${getPostActions(post)}
+            </td>
+        </tr>
+    `).join('');
+}
+
+function getPlatformIcon(platform) {
+    const icons = {
+        'facebook': 'facebook',
+        'instagram': 'instagram',
+        'twitter': 'twitter',
+        'linkedin': 'linkedin',
+        'guest_post': 'blog'
+    };
+    return icons[platform] || 'share-alt';
+}
+
+function getPlatformColor(platform) {
+    const colors = {
+        'facebook': 'text-primary',
+        'instagram': 'text-danger',
+        'twitter': 'text-info',
+        'linkedin': 'text-primary',
+        'guest_post': 'text-success'
+    };
+    return colors[platform] || 'text-muted';
+}
+
+function getStatusColor(status) {
+    const colors = {
+        'published': 'success',
+        'pending': 'warning',
+        'draft': 'info',
+        'failed': 'danger'
+    };
+    return colors[status] || 'secondary';
+}
+
+function getPostActions(post) {
+    if (post.status === 'published') {
+        return `<button class="btn btn-primary btn-sm" data-action="edit" data-id="${post.id}">
+                    <i class="fas fa-edit"></i>
+                </button>`;
+    } else if (post.status === 'pending' || post.status === 'draft') {
+        return `<button class="btn btn-success btn-sm" data-action="publish" data-id="${post.id}" data-type="post">
+                    <i class="fas fa-paper-plane"></i>
+                </button>`;
+    }
+    return '';
+}
+
+function formatTimeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' minutes ago';
+    if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + ' hours ago';
+    return Math.floor(diffInSeconds / 86400) + ' days ago';
+}
+</script>
+{% endblock %}
+
+
+
+<!-- Include Create Post Modal -->
+{% include 'create_post_modal.html' %}
+
+<script>
+// Dashboard specific functions
+function showCreatePostModal() {
+    document.getElementById('createPostModal').style.display = 'flex';
+    loadExistingContent();
+    loadAccounts();
+    loadGuestSites();
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('scheduleDate').min = today;
+    
+    // Set default time to current time + 1 hour
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+    document.getElementById('scheduleTime').value = now.toTimeString().slice(0, 5);
+}
+
+async function scrapeWordPress() {
+    try {
+        showNotification('Scraping WordPress content...', 'info');
+        
+        const response = await fetch('/api/wordpress/scrape', {
+            method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification(`Scraped ${data.count} articles successfully!`, 'success');
+            loadDashboardStats();
+        } else {
+            showNotification(data.message || 'Error scraping content', 'error');
+        }
+    } catch (error) {
+        console.error('Error scraping WordPress:', error);
+        showNotification('Error scraping WordPress content', 'error');
+    }
+}
+
+async function processPosts() {
+    try {
+        showNotification('Processing pending posts...', 'info');
+        
+        const response = await fetch('/api/posts/process', {
+            method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification(`Processed ${data.count} posts successfully!`, 'success');
+            loadDashboardStats();
+            loadRecentPosts();
+        } else {
+            showNotification(data.message || 'Error processing posts', 'error');
+        }
+    } catch (error) {
+        console.error('Error processing posts:', error);
+        showNotification('Error processing posts', 'error');
+    }
+}
+
+function refreshDashboard() {
+    showNotification('Refreshing dashboard...', 'info');
+    loadDashboardStats();
+    loadRecentPosts();
+    showNotification('Dashboard refreshed!', 'success');
+}
+</script>
+

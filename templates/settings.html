@@ -1,0 +1,1495 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Social Media Automation V2{% endblock %}
+{% block page_title %}Settings{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h2>Settings</h2>
+        <p>Configure your application preferences and integrations</p>
+    </div>
+    <div class="page-header-right">
+        <button class="btn btn-success" data-action="save-all-settings">
+            <i class="fas fa-save"></i>
+            Save All Changes
+        </button>
+        <button class="btn btn-outline" data-action="reset-settings">
+            <i class="fas fa-undo"></i>
+            Reset to Defaults
+        </button>
+    </div>
+</div>
+
+<!-- Settings Tabs -->
+<div class="tabs">
+    <div class="tab-nav">
+        <button class="tab-button active" data-tab="general">
+            <i class="fas fa-cog"></i>
+            General
+        </button>
+        <button class="tab-button" data-tab="accounts">
+            <i class="fas fa-users"></i>
+            Accounts
+        </button>
+        <button class="tab-button" data-tab="api">
+            <i class="fas fa-key"></i>
+            API Keys
+        </button>
+        <button class="tab-button" data-tab="notifications">
+            <i class="fas fa-bell"></i>
+            Notifications
+        </button>
+        <button class="tab-button" data-tab="security">
+            <i class="fas fa-shield-alt"></i>
+            Security
+        </button>
+        <button class="tab-button" data-tab="advanced">
+            <i class="fas fa-sliders-h"></i>
+            Advanced
+        </button>
+    </div>
+    
+    <!-- General Settings Tab -->
+    <div class="tab-content active" id="general">
+        <div class="settings-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Application Settings</h3>
+                </div>
+                <div class="card-body">
+                    <form id="generalSettingsForm" data-ajax>
+                        <div class="form-group">
+                            <label class="form-label">Application Name</label>
+                            <input type="text" class="form-control" name="app_name" value="Social Media Automation V2">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Default Language</label>
+                            <select class="form-control" name="language">
+                                <option value="en">English</option>
+                                <option value="id">Indonesian</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Timezone</label>
+                            <select class="form-control" name="timezone">
+                                <option value="UTC">UTC</option>
+                                <option value="America/New_York">Eastern Time</option>
+                                <option value="America/Chicago">Central Time</option>
+                                <option value="America/Denver">Mountain Time</option>
+                                <option value="America/Los_Angeles">Pacific Time</option>
+                                <option value="Europe/London">London</option>
+                                <option value="Europe/Paris">Paris</option>
+                                <option value="Asia/Tokyo">Tokyo</option>
+                                <option value="Asia/Jakarta" selected>Jakarta</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Date Format</label>
+                            <select class="form-control" name="date_format">
+                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Theme</label>
+                            <select class="form-control" name="theme">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="auto">Auto (System)</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save General Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Content Preferences</h3>
+                </div>
+                <div class="card-body">
+                    <form id="contentSettingsForm" data-ajax>
+                        <div class="form-group">
+                            <label class="form-label">Default Content Tone</label>
+                            <select class="form-control" name="default_tone">
+                                <option value="professional">Professional</option>
+                                <option value="casual">Casual</option>
+                                <option value="friendly">Friendly</option>
+                                <option value="formal">Formal</option>
+                                <option value="humorous">Humorous</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Default Content Length</label>
+                            <select class="form-control" name="default_length">
+                                <option value="short">Short (50-100 words)</option>
+                                <option value="medium">Medium (100-250 words)</option>
+                                <option value="long">Long (250-500 words)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="auto_hashtags" id="autoHashtags" checked>
+                                <label class="form-check-label" for="autoHashtags">
+                                    Automatically add hashtags
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="auto_optimize" id="autoOptimize" checked>
+                                <label class="form-check-label" for="autoOptimize">
+                                    Auto-optimize content for each platform
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="save_drafts" id="saveDrafts" checked>
+                                <label class="form-check-label" for="saveDrafts">
+                                    Automatically save drafts
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Content Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Accounts Settings Tab -->
+    <div class="tab-content" id="accounts">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Connected Accounts</h3>
+                <button class="btn btn-primary" data-modal="addAccountModal">
+                    <i class="fas fa-plus"></i>
+                    Add Account
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="accounts-list" id="accountsList">
+                    <!-- Sample accounts - will be populated by JavaScript -->
+                    <div class="account-item">
+                        <div class="account-info">
+                            <div class="account-icon">
+                                <i class="fab fa-facebook text-primary"></i>
+                            </div>
+                            <div class="account-details">
+                                <h4>Facebook Business</h4>
+                                <p>@mybusiness • Connected</p>
+                                <small>Last used: 2 hours ago</small>
+                            </div>
+                        </div>
+                        <div class="account-status">
+                            <span class="badge badge-success">Active</span>
+                        </div>
+                        <div class="account-actions">
+                            <button class="btn btn-sm btn-outline" data-action="test-account" data-id="1">
+                                <i class="fas fa-check"></i>
+                                Test
+                            </button>
+                            <button class="btn btn-sm btn-outline" data-action="edit-account" data-id="1">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" data-action="disconnect-account" data-id="1">
+                                <i class="fas fa-unlink"></i>
+                                Disconnect
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="account-item">
+                        <div class="account-info">
+                            <div class="account-icon">
+                                <i class="fab fa-instagram text-danger"></i>
+                            </div>
+                            <div class="account-details">
+                                <h4>Instagram Business</h4>
+                                <p>@mybusiness_insta • Connected</p>
+                                <small>Last used: 1 day ago</small>
+                            </div>
+                        </div>
+                        <div class="account-status">
+                            <span class="badge badge-warning">Needs Attention</span>
+                        </div>
+                        <div class="account-actions">
+                            <button class="btn btn-sm btn-warning" data-action="reconnect-account" data-id="2">
+                                <i class="fas fa-sync"></i>
+                                Reconnect
+                            </button>
+                            <button class="btn btn-sm btn-outline" data-action="edit-account" data-id="2">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" data-action="disconnect-account" data-id="2">
+                                <i class="fas fa-unlink"></i>
+                                Disconnect
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="account-item">
+                        <div class="account-info">
+                            <div class="account-icon">
+                                <i class="fab fa-linkedin text-info"></i>
+                            </div>
+                            <div class="account-details">
+                                <h4>LinkedIn Company</h4>
+                                <p>@mycompany • Connected</p>
+                                <small>Last used: 3 days ago</small>
+                            </div>
+                        </div>
+                        <div class="account-status">
+                            <span class="badge badge-success">Active</span>
+                        </div>
+                        <div class="account-actions">
+                            <button class="btn btn-sm btn-outline" data-action="test-account" data-id="3">
+                                <i class="fas fa-check"></i>
+                                Test
+                            </button>
+                            <button class="btn btn-sm btn-outline" data-action="edit-account" data-id="3">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" data-action="disconnect-account" data-id="3">
+                                <i class="fas fa-unlink"></i>
+                                Disconnect
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- API Keys Tab -->
+    <div class="tab-content" id="api">
+        <div class="settings-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">OpenAI Configuration</h3>
+                </div>
+                <div class="card-body">
+                    <form id="openaiSettingsForm" data-ajax>
+                        <div class="form-group">
+                            <label class="form-label">OpenAI API Key</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="openai_api_key" placeholder="sk-..." value="••••••••••••••••">
+                                <button type="button" class="btn btn-outline" data-action="toggle-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-help">Your OpenAI API key for content generation</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Default Model</label>
+                            <select class="form-control" name="openai_model">
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                <option value="gpt-4">GPT-4</option>
+                                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Max Tokens</label>
+                            <input type="number" class="form-control" name="max_tokens" value="1000" min="100" max="4000">
+                            <div class="form-help">Maximum tokens per API request</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Temperature</label>
+                            <input type="range" class="form-control" name="temperature" min="0" max="2" step="0.1" value="0.7">
+                            <div class="form-help">Creativity level (0 = focused, 2 = creative)</div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-info" data-action="test-openai">
+                            <i class="fas fa-vial"></i>
+                            Test Connection
+                        </button>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save OpenAI Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Other API Keys</h3>
+                </div>
+                <div class="card-body">
+                    <form id="otherApiSettingsForm" data-ajax>
+                        <div class="form-group">
+                            <label class="form-label">Unsplash API Key (Optional)</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="unsplash_api_key" placeholder="Access Key">
+                                <button type="button" class="btn btn-outline" data-action="toggle-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-help">For automatic image sourcing</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Pixabay API Key (Optional)</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="pixabay_api_key" placeholder="API Key">
+                                <button type="button" class="btn btn-outline" data-action="toggle-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-help">Alternative image source</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Webhook URL (Optional)</label>
+                            <input type="url" class="form-control" name="webhook_url" placeholder="https://your-webhook.com/endpoint">
+                            <div class="form-help">Receive notifications via webhook</div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save API Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notifications Tab -->
+    <div class="tab-content" id="notifications">
+        <div class="settings-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Email Notifications</h3>
+                </div>
+                <div class="card-body">
+                    <form id="emailNotificationForm" data-ajax>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" name="notification_email" placeholder="your@email.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Notification Preferences</label>
+                            <div class="notification-options">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="notify_success" id="notifySuccess" checked>
+                                    <label class="form-check-label" for="notifySuccess">
+                                        Successful posts
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="notify_errors" id="notifyErrors" checked>
+                                    <label class="form-check-label" for="notifyErrors">
+                                        Failed posts and errors
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="notify_warnings" id="notifyWarnings">
+                                    <label class="form-check-label" for="notifyWarnings">
+                                        Warnings and issues
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="notify_daily_summary" id="notifyDailySummary" checked>
+                                    <label class="form-check-label" for="notifyDailySummary">
+                                        Daily summary reports
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="notify_weekly_summary" id="notifyWeeklySummary">
+                                    <label class="form-check-label" for="notifyWeeklySummary">
+                                        Weekly summary reports
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Notification Frequency</label>
+                            <select class="form-control" name="notification_frequency">
+                                <option value="immediate">Immediate</option>
+                                <option value="hourly">Hourly digest</option>
+                                <option value="daily">Daily digest</option>
+                            </select>
+                        </div>
+                        
+                        <button type="button" class="btn btn-info" data-action="test-email">
+                            <i class="fas fa-envelope"></i>
+                            Send Test Email
+                        </button>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Email Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Browser Notifications</h3>
+                </div>
+                <div class="card-body">
+                    <form id="browserNotificationForm" data-ajax>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="browser_notifications" id="browserNotifications">
+                                <label class="form-check-label" for="browserNotifications">
+                                    Enable browser notifications
+                                </label>
+                            </div>
+                            <div class="form-help">Show desktop notifications for important events</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="sound_notifications" id="soundNotifications">
+                                <label class="form-check-label" for="soundNotifications">
+                                    Play notification sounds
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-info" data-action="test-browser-notification">
+                            <i class="fas fa-bell"></i>
+                            Test Notification
+                        </button>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Browser Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Security Tab -->
+    <div class="tab-content" id="security">
+        <div class="settings-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Bot Security</h3>
+                </div>
+                <div class="card-body">
+                    <form id="botSecurityForm" data-ajax>
+                        <div class="form-group">
+                            <label class="form-label">Rate Limiting</label>
+                            <select class="form-control" name="rate_limiting">
+                                <option value="conservative">Conservative (Safest)</option>
+                                <option value="moderate">Moderate (Balanced)</option>
+                                <option value="aggressive">Aggressive (Fastest)</option>
+                            </select>
+                            <div class="form-help">How aggressively to post to avoid platform restrictions</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">User Agent Rotation</label>
+                            <select class="form-control" name="user_agent_rotation">
+                                <option value="enabled">Enabled</option>
+                                <option value="disabled">Disabled</option>
+                            </select>
+                            <div class="form-help">Rotate browser user agents to avoid detection</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="proxy_support" id="proxySupport">
+                                <label class="form-check-label" for="proxySupport">
+                                    Enable proxy support
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="human_behavior" id="humanBehavior" checked>
+                                <label class="form-check-label" for="humanBehavior">
+                                    Simulate human behavior
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="headless_mode" id="headlessMode" checked>
+                                <label class="form-check-label" for="headlessMode">
+                                    Run browser in headless mode
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Security Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Data Security</h3>
+                </div>
+                <div class="card-body">
+                    <form id="dataSecurityForm" data-ajax>
+                        <div class="form-group">
+                            <label class="form-label">Data Retention Period</label>
+                            <select class="form-control" name="data_retention">
+                                <option value="30">30 days</option>
+                                <option value="90">90 days</option>
+                                <option value="180">6 months</option>
+                                <option value="365">1 year</option>
+                                <option value="0">Keep forever</option>
+                            </select>
+                            <div class="form-help">How long to keep logs and analytics data</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="encrypt_passwords" id="encryptPasswords" checked>
+                                <label class="form-check-label" for="encryptPasswords">
+                                    Encrypt stored passwords
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="auto_backup" id="autoBackup">
+                                <label class="form-check-label" for="autoBackup">
+                                    Enable automatic backups
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="button" class="btn btn-info" data-action="export-data">
+                                <i class="fas fa-download"></i>
+                                Export All Data
+                            </button>
+                            <button type="button" class="btn btn-warning" data-action="clear-logs">
+                                <i class="fas fa-trash"></i>
+                                Clear Old Logs
+                            </button>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Data Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Advanced Tab -->
+    <div class="tab-content" id="advanced">
+        <div class="settings-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Performance Settings</h3>
+                </div>
+                <div class="card-body">
+                    <form id="performanceSettingsForm" data-ajax>
+                        <div class="form-group">
+                            <label class="form-label">Concurrent Posts</label>
+                            <input type="number" class="form-control" name="concurrent_posts" value="3" min="1" max="10">
+                            <div class="form-help">Maximum number of simultaneous posts</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Request Timeout (seconds)</label>
+                            <input type="number" class="form-control" name="request_timeout" value="30" min="10" max="120">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Retry Attempts</label>
+                            <input type="number" class="form-control" name="retry_attempts" value="3" min="1" max="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Cache Duration (minutes)</label>
+                            <input type="number" class="form-control" name="cache_duration" value="60" min="5" max="1440">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Performance Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Debug & Logging</h3>
+                </div>
+                <div class="card-body">
+                    <form id="debugSettingsForm" data-ajax>
+                        <div class="form-group">
+                            <label class="form-label">Log Level</label>
+                            <select class="form-control" name="log_level">
+                                <option value="ERROR">Error</option>
+                                <option value="WARNING">Warning</option>
+                                <option value="INFO">Info</option>
+                                <option value="DEBUG">Debug</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="debug_mode" id="debugMode">
+                                <label class="form-check-label" for="debugMode">
+                                    Enable debug mode
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="verbose_logging" id="verboseLogging">
+                                <label class="form-check-label" for="verboseLogging">
+                                    Verbose logging
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="save_screenshots" id="saveScreenshots">
+                                <label class="form-check-label" for="saveScreenshots">
+                                    Save browser screenshots on errors
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Debug Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">System Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="system-info">
+                        <div class="info-item">
+                            <span class="info-label">Application Version:</span>
+                            <span class="info-value">2.0.0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Python Version:</span>
+                            <span class="info-value">3.11.0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Database:</span>
+                            <span class="info-value">SQLite 3.39.0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Chrome Version:</span>
+                            <span class="info-value">120.0.6099.109</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Last Updated:</span>
+                            <span class="info-value">January 15, 2024</span>
+                        </div>
+                    </div>
+                    
+                    <div class="system-actions">
+                        <button type="button" class="btn btn-info" data-action="check-updates">
+                            <i class="fas fa-sync"></i>
+                            Check for Updates
+                        </button>
+                        <button type="button" class="btn btn-warning" data-action="reset-app">
+                            <i class="fas fa-undo"></i>
+                            Reset Application
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<!-- Add Account Modal -->
+<div class="modal" id="addAccountModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add Social Media Account</h3>
+            <button class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="addAccountForm" data-ajax>
+                <div class="form-group">
+                    <label class="form-label">Platform</label>
+                    <select class="form-control" name="platform" id="accountPlatform" required>
+                        <option value="">Select Platform</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="linkedin">LinkedIn</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Account Name</label>
+                    <input type="text" class="form-control" name="account_name" placeholder="My Business Account" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Username/Email</label>
+                    <input type="text" class="form-control" name="username" placeholder="username or email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Additional Notes (Optional)</label>
+                    <textarea class="form-control" name="notes" rows="2" placeholder="Any additional information..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="test_connection" id="testConnection" checked>
+                        <label class="form-check-label" for="testConnection">
+                            Test connection after adding
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+            <button type="submit" form="addAccountForm" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Add Account
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+}
+
+.accounts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.account-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.account-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.account-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.account-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.account-details h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--gray-900);
+}
+
+.account-details p {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-bottom: 2px;
+}
+
+.account-details small {
+    font-size: 12px;
+    color: var(--gray-500);
+}
+
+.account-status {
+    margin-right: 16px;
+}
+
+.account-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.notification-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.input-group {
+    display: flex;
+}
+
+.input-group .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+}
+
+.system-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 500;
+    color: var(--gray-700);
+}
+
+.info-value {
+    color: var(--gray-900);
+    font-family: monospace;
+}
+
+.system-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .account-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    
+    .account-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .account-actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .system-actions {
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Settings page specific JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    initTabs();
+    initSettingsForms();
+    initPasswordToggles();
+    loadAccounts();
+    loadCurrentSettings();
+});
+
+function initTabs() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.dataset.tab;
+            
+            // Update active states
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            this.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        });
+    });
+}
+
+function initSettingsForms() {
+    const forms = [
+        'generalSettingsForm',
+        'contentSettingsForm',
+        'openaiSettingsForm',
+        'otherApiSettingsForm',
+        'emailNotificationForm',
+        'browserNotificationForm',
+        'botSecurityForm',
+        'dataSecurityForm',
+        'performanceSettingsForm',
+        'debugSettingsForm',
+        'addAccountForm'
+    ];
+    
+    forms.forEach(formId => {
+        const form = document.getElementById(formId);
+        if (form) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await handleSaveSettings(formId, new FormData(this));
+            });
+        }
+    });
+}
+
+function initPasswordToggles() {
+    const toggleButtons = document.querySelectorAll('[data-action="toggle-password"]');
+    
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        });
+    });
+}
+
+async function loadAccounts() {
+    try {
+        const response = await fetch('/api/accounts');
+        const data = await response.json();
+        
+        if (data.accounts) {
+            updateAccountsList(data.accounts);
+        }
+    } catch (error) {
+        console.error('Error loading accounts:', error);
+    }
+}
+
+function updateAccountsList(accounts) {
+    const accountsList = document.getElementById('accountsList');
+    
+    if (accounts.length === 0) {
+        accountsList.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--gray-500);">
+                <i class="fas fa-users" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
+                <p>No accounts connected</p>
+                <button class="btn btn-primary" data-modal="addAccountModal">
+                    <i class="fas fa-plus"></i>
+                    Add Your First Account
+                </button>
+            </div>
+        `;
+        return;
+    }
+    
+    accountsList.innerHTML = accounts.map(account => createAccountItem(account)).join('');
+}
+
+function createAccountItem(account) {
+    return `
+        <div class="account-item">
+            <div class="account-info">
+                <div class="account-icon">
+                    <i class="fab fa-${account.platform} ${getPlatformColor(account.platform)}"></i>
+                </div>
+                <div class="account-details">
+                    <h4>${account.account_name}</h4>
+                    <p>@${account.username} • ${capitalizeFirst(account.status)}</p>
+                    <small>Last used: ${formatTimeAgo(account.last_used)}</small>
+                </div>
+            </div>
+            <div class="account-status">
+                <span class="badge badge-${getAccountStatusColor(account.status)}">${capitalizeFirst(account.status)}</span>
+            </div>
+            <div class="account-actions">
+                ${getAccountActions(account)}
+            </div>
+        </div>
+    `;
+}
+
+function getPlatformColor(platform) {
+    const colors = {
+        'facebook': 'text-primary',
+        'instagram': 'text-danger',
+        'twitter': 'text-info',
+        'linkedin': 'text-info'
+    };
+    return colors[platform] || 'text-secondary';
+}
+
+function getAccountStatusColor(status) {
+    const colors = {
+        'active': 'success',
+        'needs_attention': 'warning',
+        'disconnected': 'danger',
+        'pending': 'info'
+    };
+    return colors[status] || 'secondary';
+}
+
+function getAccountActions(account) {
+    let actions = '';
+    
+    if (account.status === 'active') {
+        actions += `
+            <button class="btn btn-sm btn-outline" data-action="test-account" data-id="${account.id}">
+                <i class="fas fa-check"></i>
+                Test
+            </button>
+        `;
+    } else if (account.status === 'needs_attention') {
+        actions += `
+            <button class="btn btn-sm btn-warning" data-action="reconnect-account" data-id="${account.id}">
+                <i class="fas fa-sync"></i>
+                Reconnect
+            </button>
+        `;
+    }
+    
+    actions += `
+        <button class="btn btn-sm btn-outline" data-action="edit-account" data-id="${account.id}">
+            <i class="fas fa-edit"></i>
+            Edit
+        </button>
+        <button class="btn btn-sm btn-danger" data-action="disconnect-account" data-id="${account.id}">
+            <i class="fas fa-unlink"></i>
+            Disconnect
+        </button>
+    `;
+    
+    return actions;
+}
+
+async function loadCurrentSettings() {
+    try {
+        const response = await fetch('/api/settings');
+        const settings = await response.json();
+        
+        if (settings) {
+            populateSettingsForms(settings);
+        }
+    } catch (error) {
+        console.error('Error loading settings:', error);
+    }
+}
+
+function populateSettingsForms(settings) {
+    // Populate form fields with current settings
+    Object.keys(settings).forEach(key => {
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input) {
+            if (input.type === 'checkbox') {
+                input.checked = settings[key];
+            } else {
+                input.value = settings[key];
+            }
+        }
+    });
+}
+
+async function handleSaveSettings(formId, formData) {
+    try {
+        const settingsType = getSettingsTypeFromFormId(formId);
+        
+        const response = await fetch(`/api/settings/${settingsType}`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            window.app.showToast('Success', 'Settings saved successfully!', 'success');
+            
+            // Special handling for account form
+            if (formId === 'addAccountForm') {
+                window.app.closeModal('addAccountModal');
+                loadAccounts();
+            }
+        } else {
+            window.app.showToast('Error', result.message || 'Failed to save settings', 'error');
+        }
+    } catch (error) {
+        console.error('Error saving settings:', error);
+        window.app.showToast('Error', 'Failed to save settings', 'error');
+    }
+}
+
+function getSettingsTypeFromFormId(formId) {
+    const mapping = {
+        'generalSettingsForm': 'general',
+        'contentSettingsForm': 'content',
+        'openaiSettingsForm': 'openai',
+        'otherApiSettingsForm': 'api',
+        'emailNotificationForm': 'email',
+        'browserNotificationForm': 'browser',
+        'botSecurityForm': 'security',
+        'dataSecurityForm': 'data',
+        'performanceSettingsForm': 'performance',
+        'debugSettingsForm': 'debug',
+        'addAccountForm': 'account'
+    };
+    return mapping[formId] || 'general';
+}
+
+// Handle settings actions
+document.addEventListener('click', function(e) {
+    const action = e.target.closest('[data-action]');
+    if (!action) return;
+    
+    const actionType = action.dataset.action;
+    const itemId = action.dataset.id;
+    
+    switch (actionType) {
+        case 'save-all-settings':
+            saveAllSettings();
+            break;
+        case 'reset-settings':
+            resetSettings();
+            break;
+        case 'test-openai':
+            testOpenAI();
+            break;
+        case 'test-email':
+            testEmail();
+            break;
+        case 'test-browser-notification':
+            testBrowserNotification();
+            break;
+        case 'test-account':
+            testAccount(itemId);
+            break;
+        case 'reconnect-account':
+            reconnectAccount(itemId);
+            break;
+        case 'edit-account':
+            editAccount(itemId);
+            break;
+        case 'disconnect-account':
+            disconnectAccount(itemId);
+            break;
+        case 'export-data':
+            exportData();
+            break;
+        case 'clear-logs':
+            clearLogs();
+            break;
+        case 'check-updates':
+            checkUpdates();
+            break;
+        case 'reset-app':
+            resetApp();
+            break;
+    }
+});
+
+async function saveAllSettings() {
+    const forms = document.querySelectorAll('form[data-ajax]');
+    let successCount = 0;
+    
+    for (const form of forms) {
+        try {
+            await handleSaveSettings(form.id, new FormData(form));
+            successCount++;
+        } catch (error) {
+            console.error('Error saving form:', form.id, error);
+        }
+    }
+    
+    window.app.showToast('Success', `Saved ${successCount} setting groups!`, 'success');
+}
+
+function resetSettings() {
+    if (confirm('Are you sure you want to reset all settings to defaults? This cannot be undone.')) {
+        // Reset all forms to default values
+        const forms = document.querySelectorAll('form[data-ajax]');
+        forms.forEach(form => form.reset());
+        
+        window.app.showToast('Info', 'Settings reset to defaults. Click Save to apply.', 'info');
+    }
+}
+
+async function testOpenAI() {
+    try {
+        window.app.showLoading();
+        
+        const response = await fetch('/api/test/openai', { method: 'POST' });
+        const result = await response.json();
+        
+        if (result.success) {
+            window.app.showToast('Success', 'OpenAI connection successful!', 'success');
+        } else {
+            window.app.showToast('Error', result.message || 'OpenAI connection failed', 'error');
+        }
+    } catch (error) {
+        console.error('Error testing OpenAI:', error);
+        window.app.showToast('Error', 'Failed to test OpenAI connection', 'error');
+    } finally {
+        window.app.hideLoading();
+    }
+}
+
+async function testEmail() {
+    try {
+        const response = await fetch('/api/test/email', { method: 'POST' });
+        const result = await response.json();
+        
+        if (result.success) {
+            window.app.showToast('Success', 'Test email sent successfully!', 'success');
+        } else {
+            window.app.showToast('Error', result.message || 'Failed to send test email', 'error');
+        }
+    } catch (error) {
+        console.error('Error testing email:', error);
+        window.app.showToast('Error', 'Failed to send test email', 'error');
+    }
+}
+
+function testBrowserNotification() {
+    if ('Notification' in window) {
+        if (Notification.permission === 'granted') {
+            new Notification('Test Notification', {
+                body: 'This is a test notification from Social Media Automation V2',
+                icon: '/static/favicon.ico'
+            });
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    new Notification('Test Notification', {
+                        body: 'This is a test notification from Social Media Automation V2',
+                        icon: '/static/favicon.ico'
+                    });
+                }
+            });
+        } else {
+            window.app.showToast('Error', 'Browser notifications are blocked', 'error');
+        }
+    } else {
+        window.app.showToast('Error', 'Browser notifications not supported', 'error');
+    }
+}
+
+async function testAccount(accountId) {
+    try {
+        window.app.showLoading();
+        
+        const response = await fetch(`/api/accounts/${accountId}/test`, { method: 'POST' });
+        const result = await response.json();
+        
+        if (result.success) {
+            window.app.showToast('Success', 'Account connection successful!', 'success');
+            loadAccounts(); // Refresh accounts list
+        } else {
+            window.app.showToast('Error', result.message || 'Account connection failed', 'error');
+        }
+    } catch (error) {
+        console.error('Error testing account:', error);
+        window.app.showToast('Error', 'Failed to test account connection', 'error');
+    } finally {
+        window.app.hideLoading();
+    }
+}
+
+async function reconnectAccount(accountId) {
+    try {
+        window.app.showLoading();
+        
+        const response = await fetch(`/api/accounts/${accountId}/reconnect`, { method: 'POST' });
+        const result = await response.json();
+        
+        if (result.success) {
+            window.app.showToast('Success', 'Account reconnected successfully!', 'success');
+            loadAccounts();
+        } else {
+            window.app.showToast('Error', result.message || 'Failed to reconnect account', 'error');
+        }
+    } catch (error) {
+        console.error('Error reconnecting account:', error);
+        window.app.showToast('Error', 'Failed to reconnect account', 'error');
+    } finally {
+        window.app.hideLoading();
+    }
+}
+
+function editAccount(accountId) {
+    // Open edit account modal
+    console.log('Edit account:', accountId);
+    // Implementation would load account data and open edit modal
+}
+
+async function disconnectAccount(accountId) {
+    if (confirm('Are you sure you want to disconnect this account?')) {
+        try {
+            const response = await fetch(`/api/accounts/${accountId}`, { method: 'DELETE' });
+            const result = await response.json();
+            
+            if (result.success) {
+                window.app.showToast('Success', 'Account disconnected successfully!', 'success');
+                loadAccounts();
+            } else {
+                window.app.showToast('Error', result.message || 'Failed to disconnect account', 'error');
+            }
+        } catch (error) {
+            console.error('Error disconnecting account:', error);
+            window.app.showToast('Error', 'Failed to disconnect account', 'error');
+        }
+    }
+}
+
+function exportData() {
+    // Export all data
+    window.location.href = '/api/export/data';
+}
+
+async function clearLogs() {
+    if (confirm('Are you sure you want to clear old logs? This cannot be undone.')) {
+        try {
+            const response = await fetch('/api/logs/clear', { method: 'POST' });
+            const result = await response.json();
+            
+            if (result.success) {
+                window.app.showToast('Success', 'Old logs cleared successfully!', 'success');
+            } else {
+                window.app.showToast('Error', result.message || 'Failed to clear logs', 'error');
+            }
+        } catch (error) {
+            console.error('Error clearing logs:', error);
+            window.app.showToast('Error', 'Failed to clear logs', 'error');
+        }
+    }
+}
+
+function checkUpdates() {
+    window.app.showToast('Info', 'Checking for updates...', 'info');
+    // Implementation would check for application updates
+}
+
+function resetApp() {
+    if (confirm('Are you sure you want to reset the entire application? This will delete all data and cannot be undone.')) {
+        if (confirm('This is your final warning. All accounts, posts, and settings will be permanently deleted. Continue?')) {
+            // Implementation would reset the entire application
+            window.app.showToast('Warning', 'Application reset initiated...', 'warning');
+        }
+    }
+}
+
+// Utility functions
+function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function formatTimeAgo(dateString) {
+    if (!dateString) return 'Never';
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' minutes ago';
+    if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + ' hours ago';
+    if (diffInSeconds < 604800) return Math.floor(diffInSeconds / 86400) + ' days ago';
+    return date.toLocaleDateString();
+}
+</script>
+{% endblock %}
+

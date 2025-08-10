@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+
+{% block title %}Social Media Automation V2{% endblock %}
+{% block page_title %}Welcome{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">
+                <i class="fas fa-rocket"></i>
+                Social Media Automation V2
+            </h1>
+            <p class="hero-subtitle">
+                Automate your social media presence across multiple platforms with AI-powered content generation, 
+                guest posting, and intelligent scheduling.
+            </p>
+            <div class="hero-buttons">
+                <a href="/dashboard" class="btn btn-primary btn-lg">
+                    <i class="fas fa-chart-dashboard"></i>
+                    Get Started
+                </a>
+                <a href="#features" class="btn btn-outline btn-lg">
+                    <i class="fas fa-info-circle"></i>
+                    Learn More
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-graphic">
+                <div class="floating-card">
+                    <i class="fab fa-facebook"></i>
+                    <span>Facebook</span>
+                </div>
+                <div class="floating-card">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </div>
+                <div class="floating-card">
+                    <i class="fab fa-twitter"></i>
+                    <span>Twitter</span>
+                </div>
+                <div class="floating-card">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </div>
+                <div class="floating-card">
+                    <i class="fas fa-blog"></i>
+                    <span>Guest Posts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section id="features" class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Powerful Features</h2>
+            <p>Everything you need to automate your social media presence</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon primary">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>AI Content Generation</h3>
+                <p>Generate engaging content using OpenAI GPT with platform-specific optimization and tone customization.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon success">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <h3>Multi-Platform Posting</h3>
+                <p>Post to Facebook, Instagram, Twitter, LinkedIn, and custom guest posting sites from one dashboard.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon warning">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Smart Scheduling</h3>
+                <p>Schedule posts with optimal timing, bulk operations, and automated posting workflows.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon info">
+                    <i class="fas fa-blog"></i>
+                </div>
+                <h3>Guest Posting</h3>
+                <p>Automate guest posting to WordPress, Blogger, Medium, and custom CMS platforms.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon danger">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h3>Rich Content Editor</h3>
+                <p>Edit posts with a powerful rich text editor, image uploads, and content optimization tools.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon secondary">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Analytics & Monitoring</h3>
+                <p>Track performance, monitor automation status, and get detailed analytics across all platforms.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">5+</div>
+                <div class="stat-label">Platforms Supported</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Posts Automated</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Automation Running</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">AI</div>
+                <div class="stat-label">Powered Content</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Automate Your Social Media?</h2>
+            <p>Start automating your social media presence today with our powerful automation tools.</p>
+            <a href="/dashboard" class="btn btn-primary btn-lg">
+                <i class="fas fa-rocket"></i>
+                Start Automating Now
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 80px 0;
+    margin: -32px -32px 32px -32px;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    line-height: 1.2;
+}
+
+.hero-title i {
+    color: var(--accent-color);
+    margin-right: 16px;
+}
+
+.hero-subtitle {
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.hero-graphic {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-card {
+    position: absolute;
+    background: white;
+    color: var(--gray-800);
+    padding: 16px 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    animation: float 3s ease-in-out infinite;
+}
+
+.floating-card:nth-child(1) {
+    top: 20px;
+    left: 20px;
+    animation-delay: 0s;
+}
+
+.floating-card:nth-child(2) {
+    top: 80px;
+    right: 40px;
+    animation-delay: 0.5s;
+}
+
+.floating-card:nth-child(3) {
+    bottom: 100px;
+    left: 0px;
+    animation-delay: 1s;
+}
+
+.floating-card:nth-child(4) {
+    bottom: 40px;
+    right: 20px;
+    animation-delay: 1.5s;
+}
+
+.floating-card:nth-child(5) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 2s;
+    background: var(--accent-color);
+    color: white;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.features-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--gray-900);
+}
+
+.section-header p {
+    font-size: 18px;
+    color: var(--gray-600);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 40px 20px;
+    border-radius: var(--border-radius-lg);
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    margin: 0 auto 24px;
+}
+
+.feature-card h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--gray-900);
+}
+
+.feature-card p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--gray-600);
+}
+
+.stats-section {
+    background: var(--gray-50);
+    padding: 60px 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 16px;
+    color: var(--gray-600);
+    font-weight: 500;
+}
+
+.cta-section {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.cta-content h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.cta-content p {
+    font-size: 18px;
+    margin-bottom: 32px;
+    opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 36px;
+    }
+    
+    .hero-subtitle {
+        font-size: 18px;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+    
+    .section-header h2 {
+        font-size: 28px;
+    }
+    
+    .cta-content h2 {
+        font-size: 28px;
+    }
+}
+</style>
+{% endblock %}
+
